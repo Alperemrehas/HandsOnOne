@@ -28,14 +28,14 @@ application {
     mainClass.set("tr.edu.metu.sm703.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("21")
-    targetCompatibility = JavaVersion.toVersion("21")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }
 
 
 graalvmNative.toolchainDetection = false
 micronaut {
-    runtime("lambda_java")
+    runtime("netty")
     testRuntime("junit5")
     nativeLambda {
         lambdaRuntimeClassName = "io.micronaut.function.aws.runtime.MicronautLambdaRuntime"
@@ -60,7 +60,7 @@ micronaut {
 
 tasks.named("dockerfileNative") {
     baseImage = "amazonlinux:2023"
-    jdkVersion = "21"
+    jdkVersion = "17"
     args(
         "-XX:MaximumHeapSizePercent=80",
         "-Dio.netty.allocator.numDirectArenas=0",
