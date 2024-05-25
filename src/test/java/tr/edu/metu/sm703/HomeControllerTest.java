@@ -1,34 +1,33 @@
 package tr.edu.metu.sm703;
-//import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
-//import io.micronaut.function.aws.proxy.MockLambdaContext;
-//import io.micronaut.http.HttpMethod;
-//import io.micronaut.http.HttpStatus;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@MicronautTest
 class HomeControllerTest {
-//    private static ApiGatewayProxyRequestEventFunction handler;
-//
-//    @BeforeAll
-//    static void setupSpec() {
-//        handler = new ApiGatewayProxyRequestEventFunction();
-//    }
-//    @AfterAll
-//    static void cleanupSpec() {
-//        handler.getApplicationContext().close();
-//    }
-//
-//    @Test
-//    void testHandler() {
-//        APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
-//        request.setPath("/");
-//        request.setHttpMethod(HttpMethod.GET.toString());
-//        var response = handler.handleRequest(request, new MockLambdaContext());
-//
-//        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
-//        assertEquals("{\"message\":\"Hello World\"}",  response.getBody());
-//    }
+
+    @Inject
+    @Client("/")
+    HttpClient client;
+
+    @Test
+    void testIndex() {
+        Map response = client.toBlocking().retrieve("/index", Map.class);
+        assertEquals("Hello World", response.get("message"));
+    }
+
+    @Test
+    void testAdd() {
+        Map response = client.toBlocking().retrieve("/add?a=1&b=2", Map.class);
+        assertEquals(1, response.get("a"));
+        assertEquals(2, response.get("b"));
+        assertEquals(3, response.get("sum"));
+    }
 }
