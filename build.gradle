@@ -21,6 +21,12 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client-jdk")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client-jdk")
+
+    //Newly Added
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("io.micronaut:micronaut-http-client")
 }
 
 
