@@ -1,13 +1,17 @@
 name: Build and deploy JAR app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: devlectureapp   # set this to your application's name
-  JAVA_VERSION: '17'                  # set this to the Java version to use
+  JAVA_VERSION: '17'
 
 on:
   push:
     branches:
-      - master2
+      - master
+      - develop
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - release/*
 
 jobs:
   build:
@@ -44,10 +48,56 @@ jobs:
         with:
           name: java-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+      - name: Deploy to Azure Web App (production)
+        if: github.ref == 'refs/heads/master'
+        id: deploy-to-webapp-production
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: prod-lectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (develop)
+        if: github.ref == 'refs/heads/develop'
+        id: deploy-to-webapp-develop
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: dev-lectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (feature branches)
+        if: startsWith(github.ref, 'refs/heads/feature/')
+        id: deploy-to-webapp-feature
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: feature-lectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (bugfix branches)
+        if: startsWith(github.ref, 'refs/heads/bugfix/')
+        id: deploy-to-webapp-bugfix
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: bugfix-lectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (hotfix branches)
+        if: startsWith(github.ref, 'refs/heads/hotfix/')
+        id: deploy-to-webapp-hotfix
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: hotfix-lectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (release branches)
+        if: startsWith(github.ref, 'refs/heads/release/')
+        id: deploy-to-webapp-release
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: release-lectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
