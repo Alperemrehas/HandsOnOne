@@ -56,3 +56,43 @@ jobs:
 
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App (production)
+        if: github.ref == 'refs/heads/master'
+        id: deploy-to-webapp-production
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: devlectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (develop)
+        if: github.ref == 'refs/heads/develop'
+        id: deploy-to-webapp-develop
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: developlectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}
+          package: '*-all.jar'
+
+      - name: Deploy to Azure Web App (release branches)
+        if: startsWith(github.ref, 'refs/heads/release/')
+        id: deploy-to-webapp-release
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: qalectureapp
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_QA }}
+          package: '*-all.jar'
