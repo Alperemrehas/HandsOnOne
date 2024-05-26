@@ -44,12 +44,21 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      # SonarQube analysis using the Gradle plugin
+      # SonarQube analysis using SonarScanner CLI Docker image
       - name: SonarQube analysis
         env:
-          GITHUB_REF_NAME: ${{ github.ref_name }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: sonar-scanner -Dsonar.organization=Alper_Emre -Dsonar.projectKey=alperemrehas -Dsonar.sources=src
+        run: |
+          docker run \
+            --rm \
+            -e SONAR_TOKEN="${SONAR_TOKEN}" \
+            -v "${PWD}:/usr/src" \
+            sonarsource/sonar-scanner-cli \
+            -Dsonar.projectKey=alperemrehas \
+            -Dsonar.organization=Alper_Emre \
+            -Dsonar.sources=src \
+            -Dsonar.qualitygate.wait=true \
+            -Dsonar.qualitygate.timeout=1000
 
   dependency-submission:
 
