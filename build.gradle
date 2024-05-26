@@ -83,7 +83,6 @@ tasks.register("deployDevelopment") {
     doLast {
         println "Deploying to Development environment..."
         // Add your deployment logic here
-        // Example: gradle clean build -Penv=dev
     }
 }
 
@@ -91,7 +90,6 @@ tasks.register("deployQA") {
     doLast {
         println "Deploying to QA environment..."
         // Add your deployment logic here
-        // Example: gradle clean build -Penv=qa
     }
 }
 
@@ -99,7 +97,6 @@ tasks.register("deployProduction") {
     doLast {
         println "Deploying to Production environment..."
         // Add your deployment logic here
-        // Example: gradle clean build -Penv=prod
     }
 }
 
