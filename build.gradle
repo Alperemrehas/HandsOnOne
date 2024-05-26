@@ -22,8 +22,6 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client-jdk")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client-jdk")
-
-    // Newly Added
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
@@ -51,8 +49,6 @@ micronaut {
         annotations("tr.edu.metu.sm703.*")
     }
     aot {
-        // Please review carefully the optimizations enabled below
-        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
         optimizeServiceLoading = false
         convertYamlToJava = false
         precomputeOperations = true
@@ -101,5 +97,13 @@ tasks.register("deployProduction") {
     doLast {
         println "Deploying to Production environment..."
         // Add your deployment logic here
+    }
+}
+
+// Add a task to create the shadow JAR
+tasks.register("package") {
+    dependsOn("shadowJar")
+    doLast {
+        println "Packaged application into JAR."
     }
 }
