@@ -44,14 +44,9 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      # SonarCloud Scan
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
-        with:
-          projectKey: alperemrehas
-          organization: Alper_Emre
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # SonarQube analysis using the Gradle plugin
+      - name: SonarQube analysis
+        run: ./gradlew sonarqube -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   dependency-submission:
 
