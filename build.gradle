@@ -40,7 +40,6 @@ java {
 }
 
 graalvmNative.toolchainDetection = false
-
 micronaut {
     runtime("netty")
     testRuntime("junit5")
@@ -74,14 +73,15 @@ tasks.named("dockerfileNative") {
     )
 }
 
-// SonarQube configuration
 sonarqube {
     properties {
         property "sonar.projectKey", "alperemrehas"
         property "sonar.organization", "Alper_Emre"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.branch.name", System.getenv("GITHUB_REF_NAME") ?: 'main'
     }
 }
+
 
 // Deployment tasks
 tasks.register("deployDevelopment") {

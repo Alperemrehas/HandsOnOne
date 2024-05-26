@@ -46,7 +46,8 @@ jobs:
 
       # SonarQube analysis using the Gradle plugin
       - name: SonarQube analysis
-        run: ./gradlew sonarqube -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
 
   dependency-submission:
 
