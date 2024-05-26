@@ -2,6 +2,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.3.4"
     id("io.micronaut.aot") version "4.3.4"
+    id("org.sonarqube") version "4.0.0.2929"
 }
 
 version = "0.1"
@@ -22,24 +23,24 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client-jdk")
 
-    //Newly Added
+    // Newly Added
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.micronaut:micronaut-http-client")
 }
 
-
 application {
     mainClass.set("tr.edu.metu.sm703.Application")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
 }
 
-
 graalvmNative.toolchainDetection = false
+
 micronaut {
     runtime("netty")
     testRuntime("junit5")
@@ -51,8 +52,8 @@ micronaut {
         annotations("tr.edu.metu.sm703.*")
     }
     aot {
-    // Please review carefully the optimizations enabled below
-    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
         optimizeServiceLoading = false
         convertYamlToJava = false
         precomputeOperations = true
@@ -63,15 +64,43 @@ micronaut {
     }
 }
 
-
 tasks.named("dockerfileNative") {
     baseImage = "amazonlinux:2023"
     jdkVersion = "17"
     args(
-        "-XX:MaximumHeapSizePercent=80",
-        "-Dio.netty.allocator.numDirectArenas=0",
-        "-Dio.netty.noPreferDirect=true"
+            "-XX:MaximumHeapSizePercent=80",
+            "-Dio.netty.allocator.numDirectArenas=0",
+            "-Dio.netty.noPreferDirect=true"
     )
 }
 
+// SonarQube configuration
+sonarqube {
+    properties {
+        property "sonar.projectKey", "alperemrehas"
+        property "sonar.organization", "Alper_Emre"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
 
+// Deployment tasks
+tasks.register("deployDevelopment") {
+    doLast {
+        println "Deploying to Development environment..."
+        // Add your deployment logic here
+    }
+}
+
+tasks.register("deployQA") {
+    doLast {
+        println "Deploying to QA environment..."
+        // Add your deployment logic here
+    }
+}
+
+tasks.register("deployProduction") {
+    doLast {
+        println "Deploying to Production environment..."
+        // Add your deployment logic here
+    }
+}
