@@ -53,7 +53,7 @@ jobs:
         id: deploy-to-webapp-production
         uses: azure/webapps-deploy@v2
         with:
-          app-name: prodlectureapp
+          app-name: devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
 
@@ -63,7 +63,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: developlectureapp
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}
           package: '*-all.jar'
 
       - name: Deploy to Azure Web App (release branches)
@@ -72,5 +72,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: qalectureapp
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_QA }}
           package: '*-all.jar'
