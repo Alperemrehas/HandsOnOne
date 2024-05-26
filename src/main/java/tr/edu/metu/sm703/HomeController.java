@@ -22,4 +22,21 @@ public class HomeController {
         response.put("sum", a + b);
         return response;
     }
+
+    @Get("/highRequestRate")
+    public String highRequestRate() {
+        // Simulate multiple requests or high load
+        return "High request rate endpoint";
+    }
+        @Get("/slowResponse")
+    public String slowResponse() {
+        // Simulate longer response time
+        try {
+            Thread.sleep(5000); // 5 seconds delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Delayed response";
+    }
+
 }
