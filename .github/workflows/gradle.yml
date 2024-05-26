@@ -54,8 +54,8 @@ jobs:
             -e SONAR_TOKEN="${SONAR_TOKEN}" \
             -v "${PWD}:/usr/src" \
             sonarsource/sonar-scanner-cli \
-            -Dsonar.projectKey=alperemrehas \
             -Dsonar.organization=Alper_Emre \
+            -Dsonar.projectKey=alperemrehas \            
             -Dsonar.sources=src \
             -Dsonar.qualitygate.wait=true \
             -Dsonar.qualitygate.timeout=1000
