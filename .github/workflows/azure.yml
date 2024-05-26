@@ -53,7 +53,7 @@ jobs:
         id: deploy-to-webapp-production
         uses: azure/webapps-deploy@v2
         with:
-          app-name: prod-lectureapp
+          app-name: prod-devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
 
@@ -62,7 +62,7 @@ jobs:
         id: deploy-to-webapp-develop
         uses: azure/webapps-deploy@v2
         with:
-          app-name: dev-lectureapp
+          app-name: dev-devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
 
@@ -71,7 +71,7 @@ jobs:
         id: deploy-to-webapp-feature
         uses: azure/webapps-deploy@v2
         with:
-          app-name: feature-lectureapp
+          app-name: feature-devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
 
@@ -80,7 +80,7 @@ jobs:
         id: deploy-to-webapp-bugfix
         uses: azure/webapps-deploy@v2
         with:
-          app-name: bugfix-lectureapp
+          app-name: bugfix-devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
 
@@ -89,7 +89,7 @@ jobs:
         id: deploy-to-webapp-hotfix
         uses: azure/webapps-deploy@v2
         with:
-          app-name: hotfix-lectureapp
+          app-name: hotfix-devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
 
@@ -98,6 +98,6 @@ jobs:
         id: deploy-to-webapp-release
         uses: azure/webapps-deploy@v2
         with:
-          app-name: release-lectureapp
+          app-name: release-devlectureapp
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*-all.jar'
