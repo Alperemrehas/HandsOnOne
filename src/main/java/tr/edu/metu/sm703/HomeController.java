@@ -1,4 +1,5 @@
 package tr.edu.metu.sm703;
+
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
@@ -24,19 +25,19 @@ public class HomeController {
     }
 
     @Get("/highRequestRate")
-    public String highRequestRate() {
-        // Simulate multiple requests or high load
-        return "High request rate endpoint";
-    }
-        @Get("/slowResponse")
-    public String slowResponse() {
-        // Simulate longer response time
-        try {
-            Thread.sleep(5000); // 5 seconds delay
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return "Delayed response";
+    public Map<String, Object> highRequestRate() {
+        return Collections.singletonMap("message", "High request rate endpoint");
     }
 
+    @Get("/slowResponse")
+    public Map<String, Object> slowResponse() throws InterruptedException {
+        // Simulate a slow response
+        Thread.sleep(5000); // Sleep for 5 seconds
+        return Collections.singletonMap("message", "Slow response endpoint");
+    }
+
+    @Get("/simulateError")
+    public Map<String, Object> simulateError() {
+        throw new RuntimeException("Simulated error");
+    }
 }
