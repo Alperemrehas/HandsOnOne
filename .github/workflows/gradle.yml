@@ -44,13 +44,6 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      # SonarQube analysis using the Gradle plugin
-      - name: SonarQube analysis
-        env:
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
   dependency-submission:
 
     runs-on: ubuntu-latest
