@@ -20,7 +20,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,8 +32,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
@@ -44,8 +41,17 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-  dependency-submission:
+      # Deploy to Development
+      - name: Deploy to Development
+        if: startsWith(github.ref, 'refs/heads/develop')
+        run: ./gradlew deployDevelopment
 
+      # Deploy to QA
+      - name: Deploy to QA
+        if: startsWith(github.ref, 'refs/heads/release')
+        run: ./gradlew deployQA
+
+  dependency-submission:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -58,7 +64,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-      # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
