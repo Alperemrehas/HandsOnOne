@@ -1,34 +1,59 @@
 package tr.edu.metu.sm703;
-//import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
-//import io.micronaut.function.aws.proxy.MockLambdaContext;
-//import io.micronaut.http.HttpMethod;
-//import io.micronaut.http.HttpStatus;
+
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.runtime.server.EmbeddedServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Map;
 
-class HomeControllerTest {
-//    private static ApiGatewayProxyRequestEventFunction handler;
-//
-//    @BeforeAll
-//    static void setupSpec() {
-//        handler = new ApiGatewayProxyRequestEventFunction();
-//    }
-//    @AfterAll
-//    static void cleanupSpec() {
-//        handler.getApplicationContext().close();
-//    }
-//
-//    @Test
-//    void testHandler() {
-//        APIGatewayProxyRequestEvent request = new APIGatewayProxyRequestEvent();
-//        request.setPath("/");
-//        request.setHttpMethod(HttpMethod.GET.toString());
-//        var response = handler.handleRequest(request, new MockLambdaContext());
-//
-//        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
-//        assertEquals("{\"message\":\"Hello World\"}",  response.getBody());
-//    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class HomeControllerTest {
+
+    private static EmbeddedServer server;
+    private static HttpClient client;
+
+    @BeforeAll
+    static void setupServer() {
+        server = ApplicationContext.run(EmbeddedServer.class);
+        client = server.getApplicationContext().createBean(HttpClient.class, server.getURL());
+    }
+
+    @AfterAll
+    static void stopServer() {
+        if (client != null) {
+            client.close();
+        }
+        if (server != null) {
+            server.stop();
+        }
+    }
+
+    @Test
+    void testIndex() {
+        HttpRequest<Object> request = HttpRequest.GET("/");
+        HttpResponse<Map> response = client.toBlocking().exchange(request, Map.class);
+
+        assertEquals(200, response.code());
+        assertNotNull(response.body());
+        assertEquals("Hello World", response.body().get("message"));
+    }
+
+    @Test
+    void testAdd() {
+        HttpRequest<Object> request = HttpRequest.GET("/add?a=5&b=3");
+        HttpResponse<Map> response = client.toBlocking().exchange(request, Map.class);
+
+        assertEquals(200, response.code());
+        assertNotNull(response.body());
+        assertEquals(5, response.body().get("a"));
+        assertEquals(3, response.body().get("b"));
+        assertEquals(8, response.body().get("sum"));
+    }
 }
