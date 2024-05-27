@@ -3,7 +3,7 @@ name: Build and deploy JAR app to Azure Web App
 env:
   AZURE_WEBAPP_NAME: devlectureapp   # set this to your application's name
   AZURE_WEBAPP_NAME_DEV: developlectureapp
-  AZURE_WEBAPP_NAME_QA: aqlectureapp
+  AZURE_WEBAPP_NAME_QA: qalectureapp
   JAVA_VERSION: '17'                  # set this to the Java version to use
 
 on:
