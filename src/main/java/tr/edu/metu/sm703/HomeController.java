@@ -23,4 +23,15 @@ public class HomeController {
         return response;
     }
 
+    @Get("/slowResponse")
+    public String slowResponse() {
+        // Simulate longer response time
+        try {
+            Thread.sleep(5000); // 5 seconds delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Delayed response";
+    }
+
 }
