@@ -41,6 +41,16 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      # Deploy to Development
+      - name: Deploy to Development
+        if: startsWith(github.ref, 'refs/heads/develop')
+        run: ./gradlew deployDevelopment
+
+      # Deploy to QA
+      - name: Deploy to QA
+        if: startsWith(github.ref, 'refs/heads/release')
+        run: ./gradlew deployQA
+
   dependency-submission:
     runs-on: ubuntu-latest
     permissions:
